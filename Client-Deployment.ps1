@@ -14,7 +14,7 @@ function Write-Log {
 $rustdesk_pw2 = 'Num1n0us!'
 
 # Custom RustDesk configuration
-$rustdesk_cfg = "0nI9MXNslmZ6lTRycVewZ1aykVVVZ1NU1EZNhkQmlVStxUTKZWUhFla4J3RVtmI6ISeltmIsISN3EjL4YjL0IjMugTMiojI0N3boJye"
+$rustdesk_cfg = "rendezvous_server = '172.31.8.59:21116' `nnat_type = 1`nserial = 0`n`n[options]`ncustom-rendezvous-server = '172.31.8.59'`nkey = 'kUGrxjQaQfJMLmIYfBHMdMT7VUUY2kVpyW2E9zfil5s='`ndirect-server = 'Y'`ndirect-access-port = '21118'"
 
 # Log the start of the script
 Write-Log "Starting script execution."
@@ -31,7 +31,7 @@ if (-Not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
 $rdver = ((Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\RustDesk\").Version)
 
 # Check if the latest version is already installed
-if ($rdver -eq "1.3.7")
+if ($rdver -eq "1.3.8")
 {
     Write-Log "RustDesk $rdver is the latest version."
     Exit
@@ -46,12 +46,12 @@ if (!(Test-Path C:\Temp))
 cd C:\Temp
 
 # Download the installer file
-Write-Log "Downloading RustDesk version 1.3.7."
-Invoke-WebRequest "https://github.com/rustdesk/rustdesk/releases/download/1.3.7/rustdesk-1.3.7-x86_64.exe" -Outfile "rustdesk.exe"
+Write-Log "Downloading RustDesk version 1.3.8."
+Invoke-WebRequest "https://github.com/rustdesk/rustdesk/releases/download/1.3.8/rustdesk-1.3.8-x86_64.exe" -Outfile "rustdesk.exe"
 
 # Install RustDesk silently
 Write-Log "Starting RustDesk installation."
-Start-Process .\rustdesk.exe --silent-install
+Start-Process .\rustdesk.exe --silent-install --password $rustdesk_pw
 Start-Sleep -seconds 20
 
 # Stop RustDesk service before applying configuration
